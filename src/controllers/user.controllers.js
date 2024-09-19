@@ -20,8 +20,16 @@ const getOne = catchError(async (req, res) => {
   return res.status(200).json(result);
 });
 
+const destroy = catchError(async (req, res) => {
+  const { id } = req.params
+  const result = await User.destroy({ where: { id } })
+  if (!result) return res.status(404).json({ message: "User not found" })
+  return res.sendStatus(204)
+})
+
 module.exports = {
   getAll,
   create,
   getOne,
+  destroy
 };
