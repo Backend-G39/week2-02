@@ -25,9 +25,21 @@ const destroy = catchError(async (req, res) => {
   return res.sendStatus(204)
 })
 
+const update = catchError(async (req, res) => {
+  const { id } = req.params
+
+  const result = await Car.update(
+    req.body,
+    { where: { id }, returning: true }
+  )
+  if (result[0] === 0) return res.status(404).json('car not found')
+  return res.status(200).json(result[1][0])
+})
+
 module.exports = {
   getAll,
   create,
   getOne,
-  destroy
+  destroy,
+  update
 };
